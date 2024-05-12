@@ -601,16 +601,137 @@ public class Assignment03Tests_20220808006 {
         assertTrue(coursesTaken.contains(course));
     }
 
+    // tests for GradStudent
     @Test
-    public void StudentGetGradesTest() {
+    public void GradStudentSetRankTest() {
         Department department = new Department("abc", "CE");
         Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
         Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
         Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
-        student.addCourse(course, 100);
-        student.addCourse(course, 80);
-        List<Double> coursesTaken = student.getGradesTaken();
-        assertTrue(coursesTaken.contains(course));
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        grad.setRank(2);
+        assertEquals(2, grad.getRank());
+    }
+
+    @Test
+    public void GradStudentSetRankExceptionTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        assertThrowsExactly(InvalidRankException.class, () -> {
+            grad.setRank(6);
+        });
+    }
+
+    @Test
+    public void GradStudentGetRankTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        assertEquals(1, grad.getRank());
+    }
+
+    @Test
+    public void GradStudentGetThesisTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        assertEquals("AI", grad.getThesisTopic());
+    }
+
+    @Test
+    public void GradStudentSetThesisTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        grad.setThesisTopic("Machine Learning");
+        assertEquals("Machine Learning", grad.getThesisTopic());
+    }
+
+    /*
+     * @Test
+     * public void GradStudentCourseGPAPointsTest() {
+     * Department department = new Department("abc", "CE");
+     * Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department,
+     * 1);
+     * Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+     * Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L,
+     * department);
+     * GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L,
+     * department, 1, "AI");
+     * grad.setThesisTopic("Machine Learning");
+     * assertEquals("Machine Learning", grad.getThesisTopic());
+     * }
+     */
+    @SuppressWarnings("static-access")
+    @Test
+    public void GradStudentGPAPointsTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        assertEquals(4.0, grad.gpaPoints(100));
+    }
+
+    @SuppressWarnings("static-access")
+    @Test
+    public void GradStudentGPAPointsTest2() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        assertEquals(1.0, grad.gpaPoints(50));
+    }
+
+    @Test
+    public void GradStudentCourseGradeLetterTest2() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        grad.addCourse(course, 60);
+        assertEquals("AA", grad.courseGradeLetter(course));
+    }
+
+    @Test
+    public void GradStudentGetLevelTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        assertEquals("Master's Student", grad.getLevel());
+    }
+
+    @Test
+    public void GradStudentGetLevelTest2() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 2, "AI");
+        assertEquals("Doctoral Student", grad.getLevel());
+    }
+
+    @Test
+    public void GradStudentGetLevelThrowExceptionTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+
+        assertThrowsExactly(InvalidRankException.class, () -> {
+            GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 4, "AI");
+            grad.getLevel();
+        });
     }
 
 }
