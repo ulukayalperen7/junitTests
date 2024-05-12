@@ -2,6 +2,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
+import java.util.List;
+
 import org.junit.Before;
 
 import static org.junit.Assert.*;
@@ -428,4 +430,187 @@ public class Assignment03Tests_20220808006 {
             teacher.getTitle();
         });
     }
+
+    // Student class tests
+    Student student;
+
+    @Test
+    public void StudentGetAKTSTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 1, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 12L, department);
+        student.addCourse(course, 80);
+        Course course2 = new Course(department, 103, "xx3", "csecse", 2, teacher);
+        student.addCourse(course2, 10);
+        Course course3 = new Course(department, 104, "xx4", "csecse", 3, teacher);
+        student.addCourse(course3, 100);
+        assertEquals(4, student.getAKTS());
+    }
+
+    @Test
+    public void StudentGetAttemptedAKTSTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 12L, department);
+        student.addCourse(course, 80);
+        Course course2 = new Course(department, 103, "xx3", "csecse", 2, teacher);
+        student.addCourse(course2, 10);
+        Course course3 = new Course(department, 104, "xx4", "csecse", 3, teacher);
+        student.addCourse(course3, 100);
+        assertEquals(7, student.getAttemptedAKTS());
+    }
+
+    @Test
+    public void StudentaddCourseTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 12L, department);
+        student.addCourse(course, 80);
+        Course course2 = new Course(department, 103, "xx3", "csecse", 2, teacher);
+        student.addCourse(course2, 10);
+        Course course3 = new Course(department, 104, "xx4", "csecse", 3, teacher);
+        student.addCourse(course3, 100);
+        assertTrue(student.getCoursesTaken().get(0) == course);
+        assertTrue(student.getCoursesTaken().get(1) == course2);
+        assertTrue(student.getCoursesTaken().get(2) == course3);
+    }
+
+    @Test
+    public void StudentaddCourseThrowExeceptionTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 12L, department);
+
+        assertThrowsExactly(InvalidGradeException.class, () -> {
+            student.addCourse(course, -1);
+        });
+
+        Course course2 = new Course(department, 103, "xx3", "csecse", 2, teacher);
+
+        assertThrowsExactly(InvalidGradeException.class, () -> {
+            student.addCourse(course2, 102);
+        });
+    }
+
+    @Test
+    public void StudentIsGradesTrueTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 12L, department);
+        student.addCourse(course, 80);
+        Course course2 = new Course(department, 103, "xx3", "csecse", 2, teacher);
+        student.addCourse(course2, 10);
+        Course course3 = new Course(department, 104, "xx4", "csecse", 3, teacher);
+        student.addCourse(course3, 100);
+        assertTrue(student.getGradesTaken().get(0) == 80);
+        assertTrue(student.getGradesTaken().get(1) == 10);
+        assertTrue(student.getGradesTaken().get(2) == 100);
+    }
+
+    @Test
+    public void StudentGetGPAtest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 12L, department);
+        student.addCourse(course, 100);
+        Course course2 = new Course(department, 103, "xx3", "csecse", 2, teacher);
+        student.addCourse(course2, 80);
+        Course course3 = new Course(department, 104, "xx4", "csecse", 3, teacher);
+        student.addCourse(course3, 100);
+        double gpa = 26.4 / 7;
+        assertEquals(3.7142857142857144, student.getGPA());
+    }
+
+    @SuppressWarnings("static-access")
+    @Test
+    public void StudentGPAPointsTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertEquals(4.0, student.gpaPoints(100));
+    }
+
+    @SuppressWarnings("static-access")
+    @Test
+    public void StudentGPAPointsTest2() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertEquals(1.0, student.gpaPoints(50));
+    }
+
+    @Test
+    public void StudentGradeLetterTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        student.addCourse(course, 70);
+        assertEquals("CB", student.courseGradeLetter(course));
+        // it should be && instead || in Assignment 2
+    }
+
+    @Test
+    public void StudentCourseResulTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        student.addCourse(course, 45);
+        assertEquals("failed", student.courseResult(course));
+        // it should be && instead || in Assignment 2
+    }
+
+    @Test
+    public void StudentCourseResulTest2() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        student.addCourse(course, 88);
+        assertEquals("passed", student.courseResult(course));
+        // it should be && instead || in Assignment 2
+    }
+
+    @Test
+    public void StudentCourseResulTest3() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        student.addCourse(course, 52);
+        assertEquals("Conditionally Passed", student.courseResult(course));
+        // it should be && instead || in Assignment 2
+    }
+
+    @Test
+    public void StudentGetCoursesTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        student.addCourse(course, 100);
+        student.addCourse(course, 80);
+        List<Course> coursesTaken = student.getCoursesTaken();
+        assertTrue(coursesTaken.contains(course));
+    }
+
+    @Test
+    public void StudentGetGradesTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        student.addCourse(course, 100);
+        student.addCourse(course, 80);
+        List<Double> coursesTaken = student.getGradesTaken();
+        assertTrue(coursesTaken.contains(course));
+    }
+
 }
