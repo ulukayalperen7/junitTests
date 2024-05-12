@@ -9,73 +9,6 @@ import org.junit.Test;
 
 public class Assignment03Tests_20220808006 {
 
-    /*
-     * 
-     * 
-     * // course class tests
-     * 
-     * @Test
-     * public void CourseGetDepartmentTest() {
-     * Teacher teacher = new Teacher("alper", "alperenulukaya07@gmail.com", 123L,
-     * department, 0);
-     * Course course = new Course(department, 123, "title", "cse102", 3, teacher);
-     * assertEquals(department, course.getDepartment());
-     * }
-     * 
-     * @Test
-     * public void CourseSetDepartmentNullTest() {
-     * Teacher teacher = new Teacher("alper", "alperenulukaya07@gmail.com", 123L,
-     * department, 0);
-     * Course course = new Course(department, 123, "title", "cse102", 3, teacher);
-     * assertEquals(null, course.getDepartment());
-     * }
-     * 
-     * @Test
-     * public void CourseSetDepartmentTest() {
-     * Teacher teacher = new Teacher("alper", "alperenulukaya07@gmail.com", 123L,
-     * department, 0);
-     * Course course = new Course(department, 123, "title", "cse102", 3, teacher);
-     * assertEquals(department, course.getDepartment());
-     * }
-     */
-
-    /*
-     * @Test
-     * public void CourseSetDepartmentThrowExceptionTest() {
-     * Department department = new Department("cse", "computer");
-     * Teacher teacher = new Teacher("alper", "alperenulukaya07@gmail.com", 123L,
-     * department, 0);
-     * Course course = new Course(department, 123, "bio", "bio102", 3, teacher);
-     * assertThrowsExactly(DepartmentMismatchException.class, () -> {
-     * course.setDepartment(department);
-     * });
-     * }
-     */
-    /*
-     * @Test
-     * public void CourseGetTeacherTest() {
-     * Department department = new Department("cse", "computer");
-     * Teacher teacher = new Teacher("alper", "alperenulukaya07@gmail.com", 123L,
-     * department, 0);
-     * Course course = new Course(department, 123, "title", "cse102", 3, teacher);
-     * assertEquals(teacher, course.getTeacher());
-     * }
-     * 
-     * @Test
-     * public void CourSetTeacherTest() {
-     * Teacher teacher = new Teacher("alper", "alperenulukaya07@gmail.com", 123L,
-     * department, 0);
-     * Course course = new Course(department, 123, "title", "cse102", 3, teacher);
-     * course.setTeacher(teacher);
-     * assertEquals(teacher, course.getTeacher());
-     * }
-     * 
-     * @Test
-     * public void CourseGetAKTSTest() {
-     * 
-     * }
-     */
-
     // department class tests
     @Test
     public void DepartmentCodeNameTests() {
@@ -365,4 +298,134 @@ public class Assignment03Tests_20220808006 {
                 course.toString());
     }
 
+    // Teacher class tests
+    @Test
+    public void TeacherPromoteLessThanFiveTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 4);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        teacher.promote();
+        assertEquals(5, teacher.getRank());
+    }
+
+    @Test
+    public void TeacherPromoteBiggerThanFiveThrowExceptionTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 6);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertThrowsExactly(InvalidRankException.class, () -> {
+            teacher.promote();
+        });
+    }
+
+    @Test
+    public void Teacher2PromoteBiggerThanFiveThrowExceptionTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 5);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertThrowsExactly(InvalidRankException.class, () -> {
+            teacher.promote();
+        });
+    }
+
+    @Test
+    public void TeacherDemoteLessThanOneTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertThrowsExactly(InvalidRankException.class, () -> {
+            teacher.demote();
+        });
+    }
+
+    @Test
+    public void TeacherDemoteLessThanOneTest2() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertThrowsExactly(InvalidRankException.class, () -> {
+            teacher.demote();
+        });
+    }
+
+    @Test
+    public void TeacherDemoteBiggerThanOneTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 2);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        teacher.demote();
+        assertEquals(1, teacher.getRank());
+    }
+
+    @Test
+    public void TeacherSetDepartmentTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 2);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        department.setChair(teacher);
+        teacher.setDepartment(department);
+        assertEquals(department, teacher.getDepartment());
+    }
+
+    Person person;
+
+    @Test
+    public void TeacherGetTitleTest1() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 1);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertEquals("Teaching Assistant", teacher.getTitle());
+    }
+
+    @Test
+    public void TeacherGetTitleTest2() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 2);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertEquals("Lecturer", teacher.getTitle());
+    }
+
+    @Test
+    public void TeacherGetTitleTest3() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 3);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertEquals("Assistant Professor", teacher.getTitle());
+    }
+
+    @Test
+    public void TeacherGetTitleTest4() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 4);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertEquals("Associate Professor", teacher.getTitle());
+    }
+
+    @Test
+    public void TeacherGetTitleTest5() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 5);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertEquals("Professor", teacher.getTitle());
+    }
+
+    @Test
+    public void TeacherGetTitleThrowExceptionTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 6);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertThrowsExactly(InvalidValue.class, () -> {
+            teacher.getTitle();
+        });
+    }
+
+    @Test
+    public void TeacherGetTitleThrowExceptionTest2() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        assertThrowsExactly(InvalidValue.class, () -> {
+            teacher.getTitle();
+        });
+    }
 }
