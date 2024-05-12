@@ -656,21 +656,6 @@ public class Assignment03Tests_20220808006 {
         assertEquals("Machine Learning", grad.getThesisTopic());
     }
 
-    /*
-     * @Test
-     * public void GradStudentCourseGPAPointsTest() {
-     * Department department = new Department("abc", "CE");
-     * Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department,
-     * 1);
-     * Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
-     * Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L,
-     * department);
-     * GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L,
-     * department, 1, "AI");
-     * grad.setThesisTopic("Machine Learning");
-     * assertEquals("Machine Learning", grad.getThesisTopic());
-     * }
-     */
     @SuppressWarnings("static-access")
     @Test
     public void GradStudentGPAPointsTest() {
@@ -734,4 +719,45 @@ public class Assignment03Tests_20220808006 {
         });
     }
 
+    // Exception Tests
+    @Test
+    public void CourseNotFoundExceptionTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        CourseNotFoundException fatal = new CourseNotFoundException(student, course);
+        assertEquals("CourseNotFoundException: " + student.getID() + " has not yet taken" + course.courseCode(),
+                fatal.toString());
+        ;
+    }
+
+    @Test
+    public void DepartmentMismatchException() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        DepartmentMismatchException fatal = new DepartmentMismatchException(course, teacher);
+        assertEquals("DepartmentMismatchException: " + teacher.getName() + "(" + teacher.getID() + ") cannot teach "
+                + course.courseCode() + " because he/she is currently assigned to "
+                + teacher.getDepartment().getName(),
+                fatal.toString());
+        ;
+    }
+
+    @Test
+    public void InvalidRankExceptionTest() {
+        Department department = new Department("abc", "CE");
+        Teacher teacher = new Teacher("berk", "abwbrb7@gmail.com", 123L, department, 0);
+        Course course = new Course(department, 102, "xx2", "csecse", 2, teacher);
+        Student student = new Student("alperen", "alperenulukaya07@gmail.com", 123L, department);
+        GradStudent grad = new GradStudent("gradeStudent", "test@gmail.com", 44L, department, 1, "AI");
+        InvalidRankException fatal = new InvalidRankException(grad.getRank());
+        assertEquals("InvalidRankException: " + grad.getRank(),
+                fatal.toString());
+        ;
+    }
 }
